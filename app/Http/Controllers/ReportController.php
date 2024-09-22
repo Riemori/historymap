@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Report;
 use App\Models\Status;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ReportController extends Controller
 {
@@ -31,7 +34,25 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $report = new Report($request->all());
+
+        $file = $request->file('photo2');
+        // ファイル名だけだと、重複の可能性があるのでランダムな値を付与
+        $report->image = \Str::orderedUuid() . '_' . $file->getClientOriginalName();
+        DB::beginTransaction();
+        try {
+            $report->save();  // 報告の保存
+
+            if (!Storage::putFileAs('photos/reports', $file, $report->photo2)) {
+                throw new \Exception('写真の保存に失敗しました。');
+            }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return back()->withInput()->withErrors($e->getMessage());
+        }
+
+        return redirect()->route('reports.index');
     }
 
     /**
