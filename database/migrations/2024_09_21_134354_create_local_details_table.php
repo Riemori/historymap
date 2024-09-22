@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('local_details', function (Blueprint $table) {
+            $table->id()->primary();
             $table->uuid('localid');
             $table->foreign('localid')->references('id')->on('locals')->onDelete('cascade');
             $table->string('Photo2')->nullable();
