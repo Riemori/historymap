@@ -12,15 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('local_details', function (Blueprint $table) {
-            $table->id()->primary();
-            $table->uuid('localid');
-            $table->foreign('localid')->references('id')->on('locals')->onDelete('cascade');
-            $table->string('Photo2')->nullable();
-            $table->string('Photo3')->nullable();
-            $table->text('Summary')->nullable();
+            $table->id();
+            $table->foreignUuid('local_id')
+                ->references('id')
+                ->on('locals')
+                ->onDelete('cascade');
+            $table->string('photo2')->nullable();
+            $table->string('photo3')->nullable();
+            $table->text('summary')->nullable();
             $table->string('url')->nullable();
-            $table->timestamp('start_date')->nullable();
-            $table->timestamp('end_date')->nullable();
+            $table->timestamp('create_date')->nullable();
+            $table->timestamp('update_date')->nullable();
             $table->timestamp('completed_at')->nullable();
             $table->foreignId('user_id')
                 ->nullable()

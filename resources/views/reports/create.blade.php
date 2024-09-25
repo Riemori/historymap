@@ -70,7 +70,7 @@
                       <div class="mt-0 col-span-2">
                           <div class="grid grid-cols-5">
                               <div class="col-span-2">
-                                  <input type="datetime-local" name="startdate" class="w-full">
+                                  <input type="datetime-local" name="create_date" class="w-full">
                               </div>
                           </div>
                       </div>
@@ -81,7 +81,7 @@
                       <div class="mt-0 col-span-2">
                           <div class="grid grid-cols-5">
                               <div class="col-span-2">
-                                  <input type="datetime-local" name="recreatedate" class="w-full">
+                                  <input type="datetime-local" name="update_date" class="w-full">
                               </div>
                           </div>
                       </div>

@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\local_detail;
 use App\Models\local;
-use App\Models\Report;
 use App\Models\Status;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -36,16 +35,18 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
-        $local_detail = new local_detail($request->all());
         $local = new local($request->all());
+        $local_detail = new local_detail($request->all());
 
         $file = $request->file('photo2');
         // ファイル名だけだと、重複の可能性があるのでランダムな値を付与
         $local_detail->photo2 = \Str::orderedUuid() . '_' . $file->getClientOriginalName();
         DB::beginTransaction();
         try {
-            $local_detail->save();  // 報告の保存
             $local->save();  // 報告の保存
+
+            $local_detail['local_id'] = $local['id'];
+            $local_detail->save();  // 報告の保存
 
             if (!Storage::putFileAs('photos/reports', $file, $local_detail->photo2)) {
                 throw new \Exception('写真の保存に失敗しました。');
